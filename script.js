@@ -20,10 +20,13 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
 */
 
 'use strict';
-
+/*
+Modified By Anne-Gail Moreland 10/16/2019
+*/
 const canvas = document.getElementsByTagName('canvas')[0];
 resizeCanvas();
 
@@ -31,20 +34,21 @@ let config = {
     SIM_RESOLUTION: 128,
     DYE_RESOLUTION: 1024,
     CAPTURE_RESOLUTION: 512,
-    DENSITY_DISSIPATION: 1,
-    VELOCITY_DISSIPATION: 0.2,
-    PRESSURE: 0.8,
+    DENSITY_DISSIPATION: 0.7,
+    VELOCITY_DISSIPATION: 0.41,
+    PRESSURE: 0.38,
     PRESSURE_ITERATIONS: 20,
-    CURL: 30,
-    SPLAT_RADIUS: 0.25,
+    //Vorticity
+    CURL: 21,
+    SPLAT_RADIUS: 0.36,
     SPLAT_FORCE: 6000,
-    SHADING: true,
+    SHADING: false,
     COLORFUL: true,
-    COLOR_UPDATE_SPEED: 10,
+    COLOR_UPDATE_SPEED: 9,
     PAUSED: false,
-    BACK_COLOR: { r: 0, g: 0, b: 0 },
+    BACK_COLOR: { r: 255, g: 255, b: 255 },
     TRANSPARENT: false,
-    BLOOM: true,
+    BLOOM: false,
     BLOOM_ITERATIONS: 8,
     BLOOM_RESOLUTION: 256,
     BLOOM_INTENSITY: 0.8,
@@ -65,7 +69,7 @@ function pointerPrototype () {
     this.deltaY = 0;
     this.down = false;
     this.moved = false;
-    this.color = [30, 0, 300];
+    this.color = [30, 0, 200];
 }
 
 let pointers = [];
@@ -534,7 +538,7 @@ const displayShaderSource = `
     uniform vec2 texelSize;
 
     vec3 linearToGamma (vec3 color) {
-        color = max(color, vec3(0));
+        color = (max(color, vec3(0)))-50;
         return max(1.055 * pow(color, vec3(0.416666667)) - 0.055, vec3(0));
     }
 
